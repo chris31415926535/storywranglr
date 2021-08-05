@@ -1,0 +1,66 @@
+---
+output: github_document
+---
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "man/figures/README-",
+  out.width = "100%"
+)
+```
+
+# storywranglr
+
+<!-- badges: start -->
+<!-- badges: end -->
+
+This package makes it easy to explore trends in Twitter data using the Storywrangler application programming interface (API). Data is returned in a tidy tibble to make it easy to work with and visualize.
+
+For more details about Storywrangler, please see:
+
+* API documentation: <https://github.com/janeadams/storywrangler>
+* Academic paper describing uses: <https://advances.sciencemag.org/content/7/29/eabe6534.full>
+
+## Installation
+
+You can install the released version of storywranglr from [CRAN](https://CRAN.R-project.org) with:
+
+``` r
+install.packages("storywranglr")
+```
+
+## Examples
+
+Let's use `storywranglr::ngrams()` to chart the popularity of the 2-gram "black friday" over time. Not surprisingly, it looks like there's an annual peak around Black Friday.
+
+```{r example_ngram, message = FALSE, warning = FALSE}
+library(storywranglr)
+library(tidyverse)
+
+result <- storywranglr::ngrams("black friday")
+
+result %>%
+  ggplot(aes(x=date, y=rank)) +
+  geom_point() +
+  theme_minimal() +
+  scale_y_continuous(trans = "reverse") +
+  labs(title = "Twitter rank popularity of 2-gram 'black friday'",
+       subtitle = "Data from Storywrangler ngrams API",
+       x = "Date",
+       y = "Rank")
+
+
+```
+
+
+Now using `storywrangler::zipf()`, let's find the 10 top 2-grams from January 6, 2021. "the Capitol" made the top 10, and if we got a longer list we could expect to see other thematically related terms.
+
+```{r example}
+result <- zipf("2021-01-06", max = 10, ngrams = 2)
+
+knitr::kable(result)
+```
