@@ -24,3 +24,5 @@ Imports:
     urltools
 RoxygenNote: 7.1.1
 Roxygen: list(markdown = TRUE)
+URL: https://github.com/chris31415926535/storywranglr
+BugReports: https://github.com/chris31415926535/storywranglr/issues
