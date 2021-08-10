@@ -28,6 +28,12 @@ For more details about Storywrangler, please see:
 
 ## Installation
 
+You can install the developer version, which has the latest bugfixes and features, with:
+
+``` r
+devtools::install_github("chris31415926535/storywranglr")
+```
+
 You can install the released version of storywranglr from [CRAN](https://CRAN.R-project.org) with:
 
 ``` r
@@ -56,7 +62,6 @@ result %>%
 
 
 ```
-
 
 Now using `storywrangler::zipf()`, let's find the 10 top 2-grams from January 6, 2021. "the Capitol" made the top 10, and if we got a longer list we could expect to see other thematically related terms.
 
