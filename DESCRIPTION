@@ -17,8 +17,6 @@ Imports:
     dplyr,
     httr,
     jsonlite,
-    pillar,
-    stringi,
     tibble,
     urltools
 RoxygenNote: 7.1.1

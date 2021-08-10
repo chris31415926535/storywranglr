@@ -53,7 +53,6 @@ ngrams <- function(query,
   # remove repeated whitespace
   query <- gsub(x = query, pattern = "\\s+", replacement = " ")
 
-  #if (stringi::stri_count_fixed(query, " ") > 2) stop ("Please enter a 1-gram, 2-gram, or 3-gram.")
   if (nchar(query) == 0) stop ("Please supply a valid query.")
 
   # make sure the other parameters are valid
