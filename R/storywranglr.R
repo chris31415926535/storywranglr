@@ -103,19 +103,47 @@ ngrams <- function(query,
   # (tried briefly with map but this is just easier for now)
   results <- tibble::tibble()
   for (i in 1:length(df$data)){
+
+    # get the response we're looking at
     x <- df$data[[i]]
-    x$date <- as.Date(x$date)
-    x$query <- names(df$data)[[i]]
-    x$language <- metadata["language"]
+
+    # make sure response has at least one row of findings, then extrac them
+    if (nrow(tibble::as_tibble(x)) > 0) {
+
+      x$date <- as.Date(x$date)
+      x$query <- names(df$data)[[i]]
+      x$language <- metadata["language"]
+      result <- tibble::as_tibble(x)
+
+    }
+
+    # if the API response has zero rows, i.e. it didn't find anything,
+    # we create a zero-row tibble with the expected column names and types
+    if (nrow(tibble::as_tibble(x)) == 0){
+
+      result <- tibble::tibble(
+                    date = as.Date(NA),
+                    count = numeric(),
+                    count_no_rt = numeric(),
+                    rank = numeric(),
+                    rank_no_rt = numeric(),
+                    freq = numeric(),
+                    freq_no_rt = numeric(),
+                    odds = numeric(),
+                    odds_no_rt = numeric(),
+                    query = character(),
+                    language = character())
+
+    }
+
+    # add our results
     results <- dplyr::bind_rows(results,
-                                tibble::as_tibble(x))
+                                result)
   }
 
   # also give it class "storywrangler" for customized printing
   # note! this isn't implemented right now; the class doesn't do anything.
   class(results) <- c("storywrangler.ngrams", class(results))
-
-
 
   # store the url call in metadata attributes for printing
   attr(results, "api_call") <- url
