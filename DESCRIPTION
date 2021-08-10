@@ -1,7 +1,7 @@
 Package: storywranglr
 Type: Package
 Title: Explore Twitter Trends with the 'Storywrangler' API
-Version: 0.1.0
+Version: 0.1.0.9000
 Authors@R: c(person(given = "Christopher",
                     family = "Belanger", role = c("aut", "cre"),
                     email = "christopher.a.belanger@gmail.com",

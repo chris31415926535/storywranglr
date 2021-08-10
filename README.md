@@ -4,6 +4,8 @@
 # storywranglr
 
 <!-- badges: start -->
+
+[![](https://www.r-pkg.org/badges/version/storywranglr?color=green)](https://cran.r-project.org/package=storywranglr)
 <!-- badges: end -->
 
 This package makes it easy to explore trends in Twitter data using the

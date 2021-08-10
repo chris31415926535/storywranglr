@@ -16,6 +16,7 @@ knitr::opts_chunk$set(
 # storywranglr
 
 <!-- badges: start -->
+[![](https://www.r-pkg.org/badges/version/storywranglr?color=green)](https://cran.r-project.org/package=storywranglr)
 <!-- badges: end -->
 
 This package makes it easy to explore trends in Twitter data using the Storywrangler application programming interface (API). Data is returned in a tidy tibble to make it easy to work with and visualize.
