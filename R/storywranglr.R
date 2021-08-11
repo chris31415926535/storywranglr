@@ -22,8 +22,16 @@
 #'   (default) and `freq`. *Note:* API returns both by default.
 #' @param language Two-letter code for the language to search. Defaults to `en`.
 #' @param rt Boolean for whether to include retweets.
+#' @param fill_dates Boolean, defaults to `FALSE`. The Storywrangler ngrams API
+#'   only returns rows for dates when it detected any ngram usage. By default,
+#'   this function passes along that data. If the parameter `fill_dates` is set
+#'    to `TRUE`, this function adds rows with `NA` values for each day between
+#'    the earliest and latest dates in the response. Note that this is closer to
+#'    Storywrangler's behaviour if you download ngram statistics from the web
+#'    interface.
 #'
-#' @return A tibble with the API query and response.
+#' @return A tibble with the API query and response. If the API returns no data,
+#'   this function returns a 0-row tibble.
 #' @export
 #'
 #' @examples
@@ -41,7 +49,8 @@
 ngrams <- function(query,
                     metric = c("rank", "freq"),
                     language = "en",
-                    rt = c(FALSE, TRUE)){
+                    rt = c(FALSE, TRUE),
+                   fill_dates = FALSE){
 
   # trying to write this package according to API best practices here
   # https://cran.r-project.org/web/packages/httr/vignettes/api-packages.html
@@ -60,6 +69,8 @@ ngrams <- function(query,
   rt <- as.character(rt)
   rt <- match.arg(rt, rt)
   src <- "api" #match.arg(src, src)
+
+  if (!fill_dates %in% c(TRUE, FALSE)) stop ("Parameter `fill_dates` must be logical TRUE or FALSE.")
 
   base_url <- "https://storywrangling.org/api/ngrams/"
 
@@ -107,13 +118,22 @@ ngrams <- function(query,
     # get the response we're looking at
     x <- df$data[[i]]
 
-    # make sure response has at least one row of findings, then extrac them
+    # make sure response has at least one row of findings, then extract them
     if (nrow(tibble::as_tibble(x)) > 0) {
 
       x$date <- as.Date(x$date)
       x$query <- names(df$data)[[i]]
       x$language <- metadata["language"]
       result <- tibble::as_tibble(x)
+
+      # if we are filling in the missing dates, do that now
+      if (fill_dates) {
+        # get the dates we need to add back
+        all_dates <- tibble::tibble(date = seq.Date(from = min(result$date), to = max(result$date), by = "day"))
+
+        # do a left-join with our findings
+        result <- dplyr::left_join(all_dates, result, by = "date")
+      }
 
     }
 
