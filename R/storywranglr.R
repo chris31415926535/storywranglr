@@ -131,8 +131,13 @@ ngrams <- function(query,
         # get the dates we need to add back
         all_dates <- tibble::tibble(date = seq.Date(from = min(result$date), to = max(result$date), by = "day"))
 
-        # do a left-join with our findings
+        # do a left-join with our findings to add the dates
         result <- dplyr::left_join(all_dates, result, by = "date")
+
+        # and make sure we set the query and language columns for the new rows!
+        result$query <- names(df$data)[[i]]
+        result$language <- metadata["language"]
+
       }
 
     }
@@ -259,8 +264,9 @@ zipf <- function(date,
   # put the data into a tibble
   data <- tibble::as_tibble(df$data)
 
-  # add the date as a column for completeness
+  # add the date and language as columns for completeness
   data$date <- date
+  data$language <- language
 
   # also give it class "storywrangler.zipf" for customized printing
   # note! this isn't implemented right now; the class doesn't do anything.
