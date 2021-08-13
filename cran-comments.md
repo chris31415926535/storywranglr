@@ -7,4 +7,9 @@
 
 0 errors | 0 warnings | 1 note
 
-* This is a new release.
+* checking CRAN incoming feasibility ... NOTE
+Maintainer: 'Christopher Belanger <christopher.a.belanger@gmail.com>'
+
+## Downstream dependencies
+
+There are currently no downstream dependencies for this package.
